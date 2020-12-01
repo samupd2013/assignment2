@@ -33,4 +33,26 @@ public class RestaurantBillTest{
             exc.getMessage();
         }
     } 
+
+    @Test
+    public void TotaleConPiu5Gelati_Test(){
+        List<MenuItem> itemsOrdered = new ArrayList<MenuItem>();
+        User u01 = new User(01,"Luca", "Rossi", true);
+        RestaurantBill testBill = new RestaurantBill();
+
+        itemsOrdered.add(new MenuItem("Gelato cioccolato e crema", MenuItem.type.Gelato, 3.50));
+        itemsOrdered.add(new MenuItem("Gelato", MenuItem.type.Gelato, 1.00));
+        itemsOrdered.add(new MenuItem("Gelato crema", MenuItem.type.Gelato, 3.50));
+        itemsOrdered.add(new MenuItem("Gelato cioccolato", MenuItem.type.Gelato, 4.00));
+        itemsOrdered.add(new MenuItem("Coca cola", MenuItem.type.Bevanda, 3.00));
+        itemsOrdered.add(new MenuItem("Budino pinguino", MenuItem.type.Budino, 5.00));
+        itemsOrdered.add(new MenuItem("Gelato nocciola stracciatella", MenuItem.type.Gelato, 2.50));
+
+        try{
+            assertEquals(22, testBill.getOrderPrice(itemsOrdered, u01),0.0);
+        } 
+        catch (TakeAwayBillException exc){
+            exc.getMessage();
+        }
+    } 
 }
