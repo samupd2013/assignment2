@@ -12,6 +12,7 @@ public class RestaurantBill implements TakeAwayBill{
         double tot = 0;
         int numGelati = 0;
         double minPrezzoGelato = Double.MAX_VALUE; 
+        double totBevande = 0;
         for(MenuItem m : itemsOrdered){
             tot+=m.getPrice();
             if(m.getType() == type.Gelato){
@@ -20,11 +21,18 @@ public class RestaurantBill implements TakeAwayBill{
             if(m.getType() == type.Gelato && m.getPrice() < minPrezzoGelato){
                 minPrezzoGelato = m.getPrice();
             }
+            if(m.getType()==type.Bevanda){
+                totBevande += m.getPrice();
+            }
         }
         
         if(numGelati > 5){
             tot -= minPrezzoGelato * 0.5;
         }
+        if(tot-totBevande > 50){
+            tot = tot*0.9;
+        }
+        
         return tot;
     }
 }
