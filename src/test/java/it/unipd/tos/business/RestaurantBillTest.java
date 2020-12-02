@@ -78,7 +78,7 @@ public class RestaurantBillTest{
     }
 
     @Test
-    public void maggiore50ePiu5Gelati_Test(){
+    public void maggiore50_Piu5Gelati_Test(){
         List<MenuItem> itemsOrdered = new ArrayList<MenuItem>();
         User u01 = new User(01,"Luca", "Rossi", true);
         RestaurantBill testBill = new RestaurantBill();
@@ -118,4 +118,43 @@ public class RestaurantBillTest{
 
         testBill.getOrderPrice(itemsOrdered,u01);
     } 
+
+    @Test 
+    public void menoDi10Euro_Test(){
+        List<MenuItem> itemsOrdered = new ArrayList<MenuItem>();
+        User u01 = new User(01,"Luca", "Rossi", true);
+        RestaurantBill testBill = new RestaurantBill();
+
+        itemsOrdered.add(new MenuItem("Gelato cioccolato e crema", MenuItem.type.Gelato, 5.00));  
+
+        try{
+            assertEquals(5.50, testBill.getOrderPrice(itemsOrdered, u01),0.0);
+        } 
+        catch (TakeAwayBillException exc){
+            exc.getMessage();
+        }
+    }
+
+    @Test
+    public void meno10Euro_Piu5Gelati_Test(){
+        List<MenuItem> itemsOrdered = new ArrayList<MenuItem>();
+        User u01 = new User(01,"Luca", "Rossi", true);
+        RestaurantBill testBill = new RestaurantBill();
+
+        itemsOrdered.add(new MenuItem("Gelato cioccolato e crema", MenuItem.type.Gelato, 1.00));  
+        itemsOrdered.add(new MenuItem("Gelato", MenuItem.type.Gelato, 2.00));
+        itemsOrdered.add(new MenuItem("Gelato crema", MenuItem.type.Gelato, 1.00));
+        itemsOrdered.add(new MenuItem("Gelato cioccolato", MenuItem.type.Gelato, 1.00));
+        itemsOrdered.add(new MenuItem("Coca cola", MenuItem.type.Bevanda, 1.00));
+        itemsOrdered.add(new MenuItem("Budino pinguino", MenuItem.type.Budino, 1.00));
+        itemsOrdered.add(new MenuItem("Gelato nocciola stracciatella", MenuItem.type.Gelato, 1.00));
+        itemsOrdered.add(new MenuItem("Gelato nocciola", MenuItem.type.Gelato, 1.00)); 
+
+        try{
+            assertEquals(9.00, testBill.getOrderPrice(itemsOrdered, u01),0.0);
+        } 
+        catch (TakeAwayBillException exc){
+            exc.getMessage();
+        }
+    }
 }

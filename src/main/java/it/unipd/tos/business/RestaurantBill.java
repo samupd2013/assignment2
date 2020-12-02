@@ -35,6 +35,9 @@ public class RestaurantBill implements TakeAwayBill{
         if(itemsOrdered.size() > 30){
             throw new TakeAwayBillException("Non si possono ordinare più di 30 elementi");
         }
+        if(tot < 10){
+            tot += 0.5;
+        }
         return tot;
     }
 }
