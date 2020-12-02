@@ -28,7 +28,7 @@ public class User {
         return cognome;
     }
 
-    public boolean getMinorenne(){
+    public boolean isMinorenne(){
         return minorenne;
     }
 

@@ -43,11 +43,11 @@ public class UserTest{
     }
 
     @Test
-    public void getMinorenne_Test(){
+    public void isMinorenne_Test(){
         User u = new User(0,"","",true);
         User u1 = new User(1,"Nome", "Cognome", false);
-        assertEquals(true,u.getMinorenne());
-        assertEquals(false, u1.getMinorenne());
+        assertEquals(true,u.isMinorenne());
+        assertEquals(false, u1.isMinorenne());
     }
 
 
