@@ -2,6 +2,7 @@
 // Samuele De Simone 1219399
 ////////////////////////////////////////////////////////////////////
 package it.unipd.tos.business;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
@@ -11,6 +12,7 @@ import it.unipd.tos.model.MenuItem.type;
 import it.unipd.tos.business.exceptions.TakeAwayBillException;
 import java.time.LocalTime;
 public class RestaurantBill implements TakeAwayBill{
+    private List<User> utenti = new ArrayList<User>();
     public static int counterRegalo = 0;
     public double getOrderPrice(List<MenuItem> itemsOrdered, User user, LocalTime t) throws TakeAwayBillException{
         double tot = 0;
@@ -48,14 +50,15 @@ public class RestaurantBill implements TakeAwayBill{
         if(checkRegalo(user,t)){
             tot = 0;
         }
-
+        utenti.add(user);
         return tot;
     }
     private boolean checkRegalo(User u, LocalTime t){
-        Random r = new Random();
-        if(counterRegalo < 10 && u.isMinorenne() && t.getHour() == 18 && r.nextInt(2) == counterRegalo){
+        Random rand = new Random(); 
+        int r = rand.nextInt();
+        if(counterRegalo < 10 && u.isMinorenne() && t.getHour() == 18 && r == 1){
             counterRegalo++;
-            return true;
+            return !utenti.contains(u);
         }else{
             return false;
         }

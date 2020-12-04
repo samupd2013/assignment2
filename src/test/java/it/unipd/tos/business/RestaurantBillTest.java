@@ -14,6 +14,7 @@ import java.util.List;
 import java.time.LocalTime;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 import org.junit.Test;
 
 import org.junit.rules.ExpectedException;
@@ -160,6 +161,66 @@ public class RestaurantBillTest{
 
         try{
             assertEquals(9.00, testBill.getOrderPrice(itemsOrdered, u01, t),0.0);
+        } 
+        catch (TakeAwayBillException exc){
+            exc.getMessage();
+        }
+    }
+
+    @Test 
+    public void regalo_Test(){
+        List<MenuItem> itemsOrdered = new ArrayList<MenuItem>();
+        User u01 = new User(01,"Luca", "Rossi", true);
+        LocalTime t = LocalTime.parse("18:30");
+        RestaurantBill testBill = new RestaurantBill();
+        
+        itemsOrdered.add(new MenuItem("Gelato cioccolato e crema", MenuItem.type.Gelato, 1.00));
+
+        try{
+            double ris = testBill.getOrderPrice(itemsOrdered, u01, t);
+            assertTrue(ris == 0.0 || ris == 1.50);
+        } 
+        catch (TakeAwayBillException exc){
+            exc.getMessage();
+        }
+    }
+
+    @Test 
+    public void singoloRegaloPiuOrdiniStessoUSer_Test(){
+        List<MenuItem> itemsOrdered1 = new ArrayList<MenuItem>();
+        List<MenuItem> itemsOrdered2 = new ArrayList<MenuItem>();
+        List<MenuItem> itemsOrdered3 = new ArrayList<MenuItem>();
+        User u01 = new User(01,"Luca", "Rossi", true);
+        LocalTime t = LocalTime.parse("18:30");
+        RestaurantBill testBill = new RestaurantBill();
+        
+        itemsOrdered1.add(new MenuItem("Gelato cioccolato e crema", MenuItem.type.Gelato, 1.00));
+        itemsOrdered2.add(new MenuItem("Gelato cioccolato e crema", MenuItem.type.Gelato, 1.00));
+        itemsOrdered3.add(new MenuItem("Gelato cioccolato e crema", MenuItem.type.Gelato, 1.00));
+
+        try{
+            double ris = testBill.getOrderPrice(itemsOrdered1, u01, t) + testBill.getOrderPrice(itemsOrdered2, u01, t) + testBill.getOrderPrice(itemsOrdered3, u01, t);
+            assertTrue(ris == 3.00 /*2+1 di commissioni*/ || ris == 4.50/*3+1.50 di commissioni*/);
+        } 
+        catch (TakeAwayBillException exc){
+            exc.getMessage();
+        }
+    }
+
+    @Test 
+    public void massimo10Regali_Test(){
+        List<MenuItem> itemsOrdered = new ArrayList<MenuItem>();
+        LocalTime t = LocalTime.parse("18:30");
+        RestaurantBill testBill = new RestaurantBill();
+        
+        itemsOrdered.add(new MenuItem("Gelato cioccolato e crema", MenuItem.type.Gelato, 11.00));
+
+        try{
+            int ris = 0;
+            for(int i=0;i<2000;i++){
+                ris+=testBill.getOrderPrice(itemsOrdered, new User(i,"Luca","Rossi", true), t);
+            }
+            assertTrue(ris >= 22000-110 && ris <= 22000);
         } 
         catch (TakeAwayBillException exc){
             exc.getMessage();
